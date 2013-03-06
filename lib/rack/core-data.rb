@@ -170,7 +170,7 @@ module Rack
         
         get "/#{klass.table_name}/:id/?" do
           record = klass[params[:id]] or halt 404
-          record.to_json
+          {entity.name.downcase => record}.to_json
         end
 
         put "/#{klass.table_name}/:id/?" do
