@@ -1,4 +1,5 @@
 require 'rack'
+require 'rack/contrib'
 require 'sinatra/base'
 require 'sinatra/param'
 
@@ -21,6 +22,8 @@ module Rack
     end
 
     app = Class.new(Sinatra::Base) do
+      use Rack::PostBodyContentTypeParser
+
       before do
         content_type :json
       end
