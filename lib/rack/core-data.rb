@@ -29,23 +29,6 @@ module Rack
       end
 
       helpers Sinatra::Param
-
-      options '/' do
-        links = []
-        model.entities.each do |entity|
-          links << %{</#{entity.name.downcase.pluralize}>; rel="resource"}
-        end
-
-        response['Link'] = links.join("\n")
-
-        model.entities.collect{ |entity| 
-          {
-            name: entity.name, 
-            url: "/#{entity.name.downcase.pluralize}",
-            columns: entity.attributes.collect(&:name)
-          }
-        }.to_json
-      end
     end
 
     model.entities.each do |entity|
