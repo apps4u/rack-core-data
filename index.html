@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
+
+    <title>Rack-core-data by apps4u</title>
+  </head>
+
+  <body>
+
+    <header>
+      <div class="container">
+        <h1>Rack-core-data</h1>
+        <h2>Automatically generate REST APIs from Core Data models</h2>
+
+        <section id="downloads">
+          <a href="https://github.com/apps4u/rack-core-data/zipball/master" class="btn">Download as .zip</a>
+          <a href="https://github.com/apps4u/rack-core-data/tarball/master" class="btn">Download as .tar.gz</a>
+          <a href="https://github.com/apps4u/rack-core-data" class="btn btn-github"><span class="icon"></span>View on GitHub</a>
+        </section>
+      </div>
+    </header>
+
+    <div class="container">
+      <section id="main_content">
+        <h1>Rack::CoreData</h1>
+
+<p><strong>Automatically generate REST APIs for Core Data models</strong></p>
+
+<blockquote>
+<p>This is still in early stages of development, so proceed with caution when using this in a production application. Any bug reports, feature requests, or general feedback at this point would be greatly appreciated.</p>
+</blockquote>
+
+<table>
+<tr>
+<th>Core Data Model</th>
+    <th>API Endpoints</th>
+  </tr>
+<tr>
+<td><img src="http://heroku-mattt.s3.amazonaws.com/core-data-diagram.png"></td>
+    <td><ul>
+<li><tt>GET /artists</tt></li>
+      <li><tt>POST /artists</tt></li>
+      <li><tt>GET /artists/1</tt></li>
+      <li><tt>PUT /artists/1</tt></li>
+      <li><tt>DELETE /artists/1</tt></li>
+      <li><tt>GET /artists/1/songs</tt></li> 
+    </ul></td>
+  </tr>
+</table><p>Building web services for iOS apps is a constant struggle to coordinating data models. You're <em>probably</em> not running Objective-C on the server, so you're stuck duplicating your business logic--allthewhile doing your best to maintain the correct conventions and idioms for each platform.</p>
+
+<p><code>Rack::CoreData</code> aims to bridge the client/server divide, and save you time.</p>
+
+<p>Simply point <code>Rack::CoreData</code> at your Core Data model file, and a RESTful webservice is automatically created for you, with all of the resource endpoints you might expect in Rails. And since we're running on Rack, each endpoint can be overriden if you need to add or change any existing behavior. Likewise, any of the models can be re-opened to make any necessary adjustments.</p>
+
+<p><strong>Think of it like an API scaffold: while you may throw all of it away eventually, having something to start with will allow you to iterate on the most important parts of your application while you're the most excited about them.</strong></p>
+
+<h2>Usage</h2>
+
+<blockquote>
+<p>The easiest way to use Rack::CoreData is to deploy to Heroku using the <a href="https://github.com/mattt/heroku-buildpack-core-data">Core Data Buildpack</a>. Just <code>git push</code> your <code>.xcdatamodel</code> file to Heroku, and you'll have a REST webservice up and running in a matter of seconds.</p>
+</blockquote>
+
+<h3>Gemfile</h3>
+
+<div class="highlight"><pre><span class="n">source</span> <span class="ss">:rubygems</span>
+
+<span class="n">gem</span> <span class="s1">'rack-core-data'</span><span class="p">,</span> <span class="ss">:require</span> <span class="o">=&gt;</span> <span class="s1">'rack/core-data'</span>
+
+<span class="n">gem</span> <span class="s1">'thin'</span>
+<span class="n">gem</span> <span class="s1">'pg'</span>
+</pre></div>
+
+<h3>config.ru</h3>
+
+<div class="highlight"><pre><span class="nb">require</span> <span class="s1">'bundler'</span>
+<span class="no">Bundler</span><span class="o">.</span><span class="n">require</span>
+
+<span class="c1"># Rack::CoreData requires a Sequel connection to a database</span>
+<span class="no">DB</span> <span class="o">=</span> <span class="no">Sequel</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="no">ENV</span><span class="o">[</span><span class="s1">'DATABASE_URL'</span><span class="o">]</span> <span class="o">||</span> <span class="s2">"postgres://localhost:5432/coredata"</span><span class="p">)</span>
+
+<span class="n">run</span> <span class="ss">Rack</span><span class="p">:</span><span class="ss">:CoreData</span><span class="p">(</span><span class="s1">'./Example.xcdatamodeld'</span><span class="p">)</span>
+</pre></div>
+
+<h2>Examples</h2>
+
+<p>An example web API using a Core Data model can be found the <code>/example</code> directory. </p>
+
+<p>It uses the same data model as the <a href="https://github.com/afnetworking/afincrementalStore/">AFIncrementalStore</a> example iOS project, so try running that against Rack::CoreData running on localhost.</p>
+
+<h2>Contact</h2>
+
+<p>Mattt Thompson</p>
+
+<ul>
+<li><a href="http://github.com/mattt">http://github.com/mattt</a></li>
+<li><a href="http://twitter.com/mattt">http://twitter.com/mattt</a></li>
+<li><a href="mailto:m@mattt.me">m@mattt.me</a></li>
+</ul><h2>License</h2>
+
+<p>Rack::CoreData is available under the MIT license. See the LICENSE file for more info.</p>
+      </section>
+    </div>
+
+    
+  </body>
+</html>
